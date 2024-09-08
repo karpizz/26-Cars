@@ -1,0 +1,24 @@
+{
+  "name": "26-cars",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm-run-all --parallel client server",
+    "client": "npm --prefix ./client/ run start",
+    "server": "npm --prefix ./server/ run dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Bombelek",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bootstrap-icons": "^1.11.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "gh-pages": "^6.1.1",
+    "helmet": "^7.1.0",
+    "nodemon": "^3.1.4",
+    "npm-run-all": "^4.1.5"
+  }
+}
