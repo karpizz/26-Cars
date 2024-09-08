@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/karpizz/26-Cars/static/css/main.77e58a9e.css",
-    "main.js": "/karpizz/26-Cars/static/js/main.774899bb.js",
-    "static/media/unsplash-photo-2.jpg": "/karpizz/26-Cars/static/media/unsplash-photo-2.6bdababf477388660cb1.jpg",
-    "static/media/canvas.png": "/karpizz/26-Cars/static/media/canvas.60ef1bd9e1fee225c393.png",
-    "static/media/unsplash-photo-3.jpg": "/karpizz/26-Cars/static/media/unsplash-photo-3.1700681555a9659bea26.jpg",
-    "static/media/default.png": "/karpizz/26-Cars/static/media/default.6988980f46d4055ce61b.png",
-    "static/media/unsplash-photo-1.jpg": "/karpizz/26-Cars/static/media/unsplash-photo-1.695461db630979e59f29.jpg",
-    "index.html": "/karpizz/26-Cars/index.html",
-    "main.77e58a9e.css.map": "/karpizz/26-Cars/static/css/main.77e58a9e.css.map",
-    "main.774899bb.js.map": "/karpizz/26-Cars/static/js/main.774899bb.js.map"
+    "main.css": "/26-Cars/static/css/main.77e58a9e.css",
+    "main.js": "/26-Cars/static/js/main.a2aec17f.js",
+    "static/media/unsplash-photo-2.jpg": "/26-Cars/static/media/unsplash-photo-2.6bdababf477388660cb1.jpg",
+    "static/media/canvas.png": "/26-Cars/static/media/canvas.60ef1bd9e1fee225c393.png",
+    "static/media/unsplash-photo-3.jpg": "/26-Cars/static/media/unsplash-photo-3.1700681555a9659bea26.jpg",
+    "static/media/default.png": "/26-Cars/static/media/default.6988980f46d4055ce61b.png",
+    "static/media/unsplash-photo-1.jpg": "/26-Cars/static/media/unsplash-photo-1.695461db630979e59f29.jpg",
+    "index.html": "/26-Cars/index.html",
+    "main.77e58a9e.css.map": "/26-Cars/static/css/main.77e58a9e.css.map",
+    "main.a2aec17f.js.map": "/26-Cars/static/js/main.a2aec17f.js.map"
   },
   "entrypoints": [
     "static/css/main.77e58a9e.css",
-    "static/js/main.774899bb.js"
+    "static/js/main.a2aec17f.js"
   ]
 }
