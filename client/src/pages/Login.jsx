@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 
 export function Login() {
-  const { updateEmail, updateUsername, updateLoginStatus, updateRole } = useContext(GlobalContext);
+  const { updateEmail, updateUsername, updateLoginStatus, updateRole, message, updateMessage } = useContext(GlobalContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [err, setErr] = useState('');
-  
+
   function updateEmailLogin(e) {
     setEmail(e.target.value);
   }
@@ -39,26 +38,26 @@ export function Login() {
             updateRole(data.user.role);
             navigate('/dashboard');
           } else {
-            setErr(data.msg)
+            updateMessage(data.msg)
           }
         })
         .catch(err => console.error(err))
     }
   }
-
+  
   return (
-    <div className="container col-6 col-lg-3 my-5 text-center">
+    <div className="container col-4 my-5 text-center min-vh-100">
       <div className="form-signin">
         <form onSubmit={handleSubmit}>
           <h1 className="h1 mb-3 fw-normal">Please login</h1>
-          {err ? <span className="badge text-bg-danger rounded-pill mb-3">{err}</span> : ''}
+          {message ? <span style={{fontSize: '14px'}} className="badge text-bg-danger rounded-pill mb-3">{message}</span> : ''}
           <div className="form-floating">
-            <input onChange={updateEmailLogin} type="email" className="form-control mb-1" id="email" required/>
-            <label htmlFor="floatingInput">Email address</label>
+            <input autoComplete="on" onChange={updateEmailLogin} type="email" className="form-control mb-1" id="email" required />
+            <label htmlFor="email">Email address</label>
           </div>
           <div className="form-floating">
-            <input onChange={updatePasswordLogin} type="password" className="form-control" id="password" required/>
-            <label htmlFor="floatingPassword">Password</label>
+            <input autoComplete="on" onChange={updatePasswordLogin} type="password" className="form-control" id="password" required />
+            <label htmlFor="password">Password</label>
           </div>
           <div className="form-check text-start my-3">
             <input className="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault" />

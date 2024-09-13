@@ -1,7 +1,7 @@
 
 import { useContext, useEffect, useState } from 'react';
-import { GlobalContext } from '../../context/GlobalContext';
-import { NoPage } from '../NoPage';
+import { GlobalContext } from '../../../context/GlobalContext';
+import { NoPage } from '../../NoPage';
 
 export function BuyerDashboard() {
   const { role, username } = useContext(GlobalContext);

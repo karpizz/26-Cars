@@ -7,6 +7,7 @@ import { logout } from './logout.js';
 import { carTypes } from './carTypes.js';
 import { carList } from './carList.js';
 import { users } from './users.js';
+import { profile } from './profile.js';
 
 export const api = express.Router();
 
@@ -28,7 +29,7 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 300000,
+        fileSize: 3000000,
     },
 });
 
@@ -39,10 +40,10 @@ api.use('/upload', upload.single('image_file'), (req, res)=>{
     });
 });
 
-
 api.use('/register', register);
 api.use('/login', login);
 api.use('/logout', logout);
 api.use('/carTypes', carTypes);
 api.use('/carList', carList);
 api.use('/users', users);
+api.use('/profile', profile);

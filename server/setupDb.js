@@ -18,10 +18,11 @@ async function setupDb() {
 
     connection.query(`USE cars`);
 
-    
+
     if (DATABASE_RESET) {
         await rolesTable(connection);
         await usersTable(connection);
+        await usersInfoTable(connection);
         await tokensTable(connection);
 
         await createCarType(connection);
@@ -51,6 +52,24 @@ async function usersTable(db) {
                         KEY role_id (role_id),
                         CONSTRAINT users_ibfk_1 FOREIGN KEY (role_id) REFERENCES roles (id)
                     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci`
+        await db.execute(sql);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function usersInfoTable(db) {
+    try {
+        const sql = `CREATE TABLE IF NOT EXISTS users_info (
+                        users_info_id int(10) NOT NULL,
+                        surname varchar(100) NOT NULL,
+                        mobile int(9) NOT NULL,
+                        address varchar(100) NOT NULL,
+                        user_photo varchar(100) NOT NULL,
+                        KEY users_info_id (users_info_id),
+                        CONSTRAINT users_info_ibfk_1 FOREIGN KEY (users_info_id) REFERENCES users (id)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci`
         await db.execute(sql);
     } catch (error) {
         console.log(error);

@@ -27,22 +27,25 @@ export function UserHeader() {
     const publicLinks = <>
           <li className="nav-item"><Link to="/login" className="nav-link link-body-emphasis px-2">Login</Link></li>
           <li className="nav-item"><Link to="/register" className="nav-link link-body-emphasis px-2">Sign up</Link></li>
-          <li className="nav-item"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
       </>
 
     const adminLinks = <>
             <li className="nav-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2">Dashboard</Link></li>
             <li className="nav-item"><Link to="/users" className="nav-link link-body-emphasis px-2">Users</Link></li>
+            <li className="nav-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">Profile</Link></li>
             <li className="nav-item"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
       </>
 
     const buyerLinks = <>
-          <li className="nav-item"><Link to="/" className="nav-link link-body-emphasis px-2">Buyer profile</Link></li>
+            <li className="nav-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2">Dashboard</Link></li>
+            <li className="nav-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">Profile</Link></li>
           <li className="nav-item"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
     </>
 
     const sellerLinks = <>
-          <li className="nav-item"><Link to="/" className="nav-link link-body-emphasis px-2">Seller profile</Link></li>
+            <li className="nav-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2">Dashboard</Link></li>
+            <li className="nav-item"><Link to="/cars" className="nav-link link-body-emphasis px-2">Cars</Link></li>
+            <li className="nav-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">Profile</Link></li>
           <li className="nav-item"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
       </>
 

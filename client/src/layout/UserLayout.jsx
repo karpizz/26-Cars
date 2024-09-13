@@ -3,31 +3,23 @@ import { UserHeader } from '../componets/UserHeader';
 import { Footer } from '../componets/Footer';
 import { useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
-import { BuyerDashboard } from '../pages/dashboard/BuyerDashboard';
-import { SellerDashboard } from '../pages/dashboard/SellerDashboard';
+import { Login } from '../pages/Login';
+import { Header } from '../componets/Header';
+import { NoPage } from '../pages/NoPage';
 
 export function UserLayout() {
 
     const { role } = useContext(GlobalContext);
+    let content = <Outlet/>;
 
-    let content = <div className='container text-center my-5'>Please login</div>;
-    
-    if (role === 'admin') {
-        content = <Outlet />;
-    }
-
-    if (role === 'seller') {
-        content = <SellerDashboard />;
-    }
-
-    if (role === 'buyer') {
-        content = <BuyerDashboard />;
-    }
+    if (role !== 'admin' && role !== 'seller' && role !== 'buyer') {
+        content = <NoPage />;
+      } 
 
     return (
         <>
             <UserHeader />
-            {content}
+            <main>{content}</main>
             <Footer />
         </>
     )

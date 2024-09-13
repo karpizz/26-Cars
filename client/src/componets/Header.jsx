@@ -38,7 +38,7 @@ const authLinks = <>
         <nav className="navbar navbar-expand-lg d-flex flex-wrap bg-primary" data-bs-theme="dark">
           <div className="container">
             <ul className='nav me-auto'>
-              <li className="nav-item"><Link to="/" className="nav-link link-body-emphasis px-2 active" aria-current="page">Cars</Link></li>
+              <li className="nav-item"><Link to="/" className="nav-link link-body-emphasis px-2 active" aria-current="page">Home</Link></li>
             </ul>
             <ul className='nav'>
             {loginStatus ? authLinks : publicLinks}

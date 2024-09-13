@@ -50,12 +50,12 @@ export function Users() {
   return (
     <div className="container">
       <div className="pt-3 pb-2 mb-3">
-        <h1 className="h2 text-center">Welcome admin {username}</h1>
+        <h1 className="h2 mt-5 text-center">Welcome admin {username}</h1>
       </div>
       <div>
         <h2>All users</h2>
       </div>
-      <div className="table-responsive-lg">
+      <div className="table-responsive-lg min-vh-100">
         <table className="table table-striped">
           <thead className='table-dark'>
             <tr>
@@ -74,7 +74,7 @@ export function Users() {
                   <td>{user.id}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
-                  <td>{user.role}</td>
+                  <td>{user.role[0].toUpperCase() + user.role.slice(1)}</td>
                   <td>{user.is_blocked
                     ? <span className="badge text-bg-danger rounded-pill">Blocked</span>
                     : <span className="badge text-bg-success rounded-pill">Active</span>

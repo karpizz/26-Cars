@@ -13,6 +13,8 @@ export const initialContext = {
     carTypes: [],
     updateCars: () => { },
     updateCarTypes: () => { },
+    message: '',
+    updateMessage: () => { },
 };
 
 export const GlobalContext = createContext(initialContext);
@@ -24,6 +26,8 @@ export const ContextWrapper = (props) => {
     const [email, setEmail] = useState(initialContext.email);
     const [cars, setCars] = useState(initialContext.cars);
     const [carTypes, setCarTypes] = useState(initialContext.carTypes);
+    const [message, setMessage] = useState(initialContext.message);
+
     //login
     useEffect(() => {
         fetch('http://localhost:3001/api/login', {
@@ -44,6 +48,7 @@ export const ContextWrapper = (props) => {
             })
             .catch(console.error)
     }, []);
+
     //carlist
     useEffect(() => {
         fetch('http://localhost:3001/api/carList', {
@@ -61,6 +66,7 @@ export const ContextWrapper = (props) => {
             })
             .catch(console.error)
     }, []);
+    
     //car types
     useEffect(() => {
         fetch('http://localhost:3001/api/carTypes', {
@@ -73,6 +79,14 @@ export const ContextWrapper = (props) => {
             })
             .catch(err => console.error(err))
     }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setMessage('')
+        }, 5000)
+
+        return () => clearInterval(timer)
+    }, [message])
 
     function updateRole(role) {
         const allowedRoles = ['admin', 'seller', 'buyer'];
@@ -96,6 +110,10 @@ export const ContextWrapper = (props) => {
         setCars(data);
     }
 
+    function updateMessage(data) {
+        setMessage(data);
+    }
+
     const value = {
         loginStatus,
         updateLoginStatus,
@@ -108,6 +126,8 @@ export const ContextWrapper = (props) => {
         cars,
         updateCars,
         carTypes,
+        message,
+        updateMessage,
     }
 
     return (

@@ -55,6 +55,7 @@ carList.post('/', async (req, res) => {
       
           return res.json({
               status: 'ok',
+              msg: 'New car added',
               data: selectRes,
           });
   } catch (error) {
@@ -64,12 +65,12 @@ carList.post('/', async (req, res) => {
   }
 });
 
-carList.get('/:id', async (req, res) => {
-  const { id } = req.params;
+carList.get('/:carId', async (req, res) => {
+  const { carId } = req.params;
 
   try {
     const selectQuery = `SELECT * FROM  \`create-car\` WHERE id = ?;`;
-    const [selectRes] = await connection.execute(selectQuery, [id]);
+    const [selectRes] = await connection.execute(selectQuery, [carId]);
     
     return res.status(200).json({
       status: 'ok',
@@ -97,6 +98,7 @@ carList.delete('/:id', async (req, res) => {
 
     return res.status(200).json({
       status: 'ok',
+      msg: 'Car deleted',
       data: selectRes
     });
   } catch (error) {
@@ -122,11 +124,19 @@ carList.put('/:carId', async (req, res) => {
   try {
       const insertQ = `UPDATE \`create-car\` SET name = ?, year = ?, price = ?, selectedType = ?, image = ? WHERE id = ?`;
       const [insertRes] = await connection.execute(insertQ, [newName, newYear, newPrice, newSelectCarType, newPic, carId]);
+      console.log(insertRes);
       
+        if (insertRes.changedRows < 1) {
+          return res.json({
+            status: 'ok',
+            msg: 'Nothing was updated',
+        });
+        } else {
           return res.json({
               status: 'ok',
-              msg: 'car updated',
+              msg: 'Car updated',
           });
+        }
   } catch (error) {
       res.status(500).json({msg: 'update car error'});
   }

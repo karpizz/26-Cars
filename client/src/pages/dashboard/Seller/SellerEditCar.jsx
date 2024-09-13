@@ -1,41 +1,42 @@
 import { useEffect, useState, useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalContext';
-import { NoPage } from '../NoPage';
+import { GlobalContext } from '../../../context/GlobalContext';
+import { NoPage } from '../../NoPage';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import defailtImg from '../../photo/default.png';
+import defailtImg from '../../../photo/default.png';
 
-export function EditCar() {
+export function SellerEditCar() {
   const navigate = useNavigate();
   const { carId } = useParams();
-  const { role, cars, carTypes } = useContext(GlobalContext);
+  const { role, cars, carTypes, updateMessage } = useContext(GlobalContext);
   const [car] = cars.filter(car => car.id === +carId);
 
-  const [name, setName] = useState(car.name);
-  const [year, setYear] = useState(car.year);
-  const [price, setPrice] = useState(car.price);
-  const [selectCarType, setSelectCarType] = useState(car.selectedType);
-  const [image, setImage] = useState(car.image);
+  const [name, setName] = useState('');
+  const [year, setYear] = useState('');
+  const [price, setPrice] = useState('');
+  const [selectCarType, setSelectCarType] = useState('');
+  const [image, setImage] = useState('');
 
   //fetch data for selected car to update
-  // useEffect(() => {
-  //   fetch('http://localhost:3001/api/carList/' + carId, {
-  //     method: 'GET',
-  //     credentials: 'include',
-  //     headers: {
-  //       Accept: 'application/json',
-  //     }
-  //   }).then(res => res.json())
-  //     .then(data => {
-  //       if (data.status === 'ok') {
-  //         updateCars(data.car)
-  //         setName(data.car.name)
-  //         setYear(data.car.year)
-  //         setPrice(data.car.price)
-  //         setSelectCarType(data.car.selectedType)
-  //       }
-  //     })
-  //     .catch(err => console.error(err))
-  // }, []);
+  useEffect(() => {
+    fetch('http://localhost:3001/api/carList/' + carId, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+      }
+    }).then(res => res.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          // updateCars(data.car)
+          setName(car.name)
+          setYear(car.year)
+          setPrice(car.price)
+          setSelectCarType(car.selectedType)
+          setImage(car.image)
+        }
+      })
+      .catch(err => console.error(err))
+  }, []);
 
   if (role !== 'seller') {
     return <NoPage />;
@@ -90,6 +91,7 @@ export function EditCar() {
       .then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
+          updateMessage(data.msg)
           navigate('/dashboard')
         }
       })
@@ -102,11 +104,11 @@ export function EditCar() {
       <div className="d-flex col-12 pt-3 pb-2 mb-3 text-center justify-content-center">
         <form onSubmit={submitHandler}>
           <div className="form-floating mb-3">
-            <input id='name' onChange={updateName} value={name} type="text" className="form-control rounded-3" placeholder='Name' />
+            <input autoComplete='on' id='name' onChange={updateName} value={name} type="text" className="form-control rounded-3" placeholder='Name' />
             <label htmlFor="name">Name</label>
           </div>
           <div className="form-floating mb-3">
-            <input id='price' onChange={updatePrice} value={price} type="text" className="form-control rounded-3" placeholder='Price' />
+            <input autoComplete='on' id='price' onChange={updatePrice} value={price} type="text" className="form-control rounded-3" placeholder='Price' />
             <label htmlFor="price">Price</label>
           </div>
           <div className="mb-3">
@@ -121,7 +123,7 @@ export function EditCar() {
             </select>
           </div>
           <div className="form-floating mb-3">
-            <input id='year' onChange={updateYear} value={year} type="text" className="form-control rounded-3" placeholder='Year' />
+            <input autoComplete='on' id='year' onChange={updateYear} value={year} type="text" className="form-control rounded-3" placeholder='Year' />
             <label htmlFor="year">Year</label>
           </div>
           <div className="form-floating mb-3">
@@ -131,8 +133,8 @@ export function EditCar() {
           <div className="form-floating mb-3">
                     <img src={image ? image : defailtImg} alt="image" style={{width: '150px'}}/>
                   </div>
-          <button className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit" onClick={submitHandler}>Confirm</button>
-          <Link className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" to='/dashboard'>Cancel</Link>
+          <button className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Confirm</button>
+          <Link className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" to='/cars'>Cancel</Link>
         </form>
       </div>
     </div>
