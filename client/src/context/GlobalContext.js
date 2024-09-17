@@ -15,6 +15,8 @@ export const initialContext = {
     updateCarTypes: () => { },
     message: '',
     updateMessage: () => { },
+    userImg: '',
+    updateUserPhoto: () => { },
 };
 
 export const GlobalContext = createContext(initialContext);
@@ -27,6 +29,7 @@ export const ContextWrapper = (props) => {
     const [cars, setCars] = useState(initialContext.cars);
     const [carTypes, setCarTypes] = useState(initialContext.carTypes);
     const [message, setMessage] = useState(initialContext.message);
+    const [userImg, setUserImg] = useState(initialContext.userImg);
 
     //login
     useEffect(() => {
@@ -44,6 +47,24 @@ export const ContextWrapper = (props) => {
                     setRole(data.user.role);
                     setUsername(data.user.username);
                     setEmail(data.user.email);
+                }
+            })
+            .catch(console.error)
+    }, []);
+
+    //user photo
+    useEffect(() => {
+        fetch('http://localhost:3001/api/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            credentials: 'include',
+        }).then(res => res.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    setUserImg(data.data.user_photo)
                 }
             })
             .catch(console.error)
@@ -114,6 +135,10 @@ export const ContextWrapper = (props) => {
         setMessage(data);
     }
 
+    function updateUserPhoto(data) {
+        setUserImg(data);
+    }
+
     const value = {
         loginStatus,
         updateLoginStatus,
@@ -128,6 +153,8 @@ export const ContextWrapper = (props) => {
         carTypes,
         message,
         updateMessage,
+        userImg,
+        updateUserPhoto,
     }
 
     return (

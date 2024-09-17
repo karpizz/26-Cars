@@ -27,7 +27,6 @@ export function SellerEditCar() {
     }).then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          // updateCars(data.car)
           setName(car.name)
           setYear(car.year)
           setPrice(car.price)
@@ -131,7 +130,7 @@ export function SellerEditCar() {
             <label htmlFor="pic">Picture</label>
           </div>
           <div className="form-floating mb-3">
-                    <img src={image ? image : defailtImg} alt="image" style={{width: '150px'}}/>
+                    <img src={image ? image : defailtImg} alt={image} style={{width: '150px'}}/>
                   </div>
           <button className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Confirm</button>
           <Link className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" to='/cars'>Cancel</Link>

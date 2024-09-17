@@ -38,7 +38,7 @@ export function Users() {
     }).then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-            setUsers(pre => pre.map(user => user.id === userId ? {...user, is_blocked: status} : user))
+          setUsers(pre => pre.map(user => user.id === userId ? { ...user, is_blocked: status } : user))
         }
       })
       .catch(err => console.error(err))
@@ -75,12 +75,13 @@ export function Users() {
                   <td>{user.username}</td>
                   <td>{user.email}</td>
                   <td>{user.role[0].toUpperCase() + user.role.slice(1)}</td>
-                  <td>{user.is_blocked
-                    ? <span className="badge text-bg-danger rounded-pill">Blocked</span>
-                    : <span className="badge text-bg-success rounded-pill">Active</span>
-                  }</td>
+                  <td>
+                    {user.is_blocked
+                      ? <span className="badge text-bg-danger rounded-pill">Blocked</span>
+                      : <span className="badge text-bg-success rounded-pill">Active</span>}
+                  </td>
                   <td className='text-end'>
-                    {user.is_blocked ? <Unblock userId={user.id}/> : <Block userId={user.id} />}
+                    {user.is_blocked ? <Unblock userId={user.id} /> : <Block userId={user.id} />}
                   </td>
                 </tr>
               ))

@@ -3,8 +3,6 @@ import { UserHeader } from '../componets/UserHeader';
 import { Footer } from '../componets/Footer';
 import { useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
-import { Login } from '../pages/Login';
-import { Header } from '../componets/Header';
 import { NoPage } from '../pages/NoPage';
 
 export function UserLayout() {
@@ -18,9 +16,9 @@ export function UserLayout() {
 
     return (
         <>
-            <UserHeader />
+            <header><UserHeader /></header>
             <main>{content}</main>
-            <Footer />
+            <footer><Footer /></footer>
         </>
     )
 }

@@ -8,6 +8,7 @@ import { carTypes } from './carTypes.js';
 import { carList } from './carList.js';
 import { users } from './users.js';
 import { profile } from './profile.js';
+import { funds } from './funds.js';
 
 export const api = express.Router();
 
@@ -47,3 +48,4 @@ api.use('/carTypes', carTypes);
 api.use('/carList', carList);
 api.use('/users', users);
 api.use('/profile', profile);
+api.use('/funds', funds);

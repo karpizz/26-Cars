@@ -3,7 +3,7 @@ import { GlobalContext } from "../context/GlobalContext";
 import { useContext } from "react";
 
 export function Header() {
-  const { loginStatus, updateEmail, updateUsername, updateLoginStatus, updateRole} = useContext(GlobalContext);
+  const { loginStatus, updateEmail, updateUsername, updateLoginStatus, updateRole } = useContext(GlobalContext);
   const navigate = useNavigate();
 
   function logOut() {
@@ -11,39 +11,47 @@ export function Header() {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-      }, 
+      },
       credentials: 'include',
     })
-    .then(() => {
-      updateLoginStatus(false);
-      updateEmail('');
-      updateUsername('');
-      updateRole('');
-      navigate('/');
-    })
-    .catch(console.error)
+      .then(() => {
+        updateLoginStatus(false);
+        updateEmail('');
+        updateUsername('');
+        updateRole('');
+        navigate('/');
+      })
+      .catch(console.error)
   }
 
   const publicLinks = <>
-  <li className="nav-item"><Link to="/login" className="nav-link link-body-emphasis px-2">Login</Link></li>
-  <li className="nav-item"><Link to="/register" className="nav-link link-body-emphasis px-2">Register</Link></li>
-</>
+    <li className="nav-item"><Link to="/login" className="nav-link link-body-emphasis px-2 text-white">Login</Link></li>
+    <li className="nav-item"><Link to="/register" className="nav-link link-body-emphasis px-2 text-white">Register</Link></li>
+  </>
 
-const authLinks = <>
-    <li className="nav-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2">Dashboard</Link></li>
-    <li className="nav-item"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
-</>
+  const authLinks = <>
+    <li className="nav-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2 text-white">Dashboard</Link></li>
+    <li className="nav-item"><button onClick={logOut} className="nav-link link-body-emphasis px-2 text-white">Logout</button></li>
+  </>
 
-    return (
-        <nav className="navbar navbar-expand-lg d-flex flex-wrap bg-primary" data-bs-theme="dark">
-          <div className="container">
-            <ul className='nav me-auto'>
-              <li className="nav-item"><Link to="/" className="nav-link link-body-emphasis px-2 active" aria-current="page">Home</Link></li>
+  return (
+    <header className="p-3 mb-3 border-bottom text-bg-info">
+      <div className="container">
+        <div className="d-flex flex-wrap justify-content-between">
+          <ul className="nav col-12 col-lg-auto col-sm-auto me-lg-auto mb-2 mb-md-0">
+            <li className="nav-item"><Link to="/" className="nav-link link-body-emphasis px-2 text-white" aria-current="page">Home</Link></li>
+            <li><Link to="/" className="nav-link px-2 link-body-emphasis text-white">Inventory</Link></li>
+          </ul>
+          <div>
+            <ul className="nav text-end">
+              {loginStatus ? authLinks : publicLinks}
             </ul>
-            <ul className='nav'>
-            {loginStatus ? authLinks : publicLinks}
-            </ul>
-            </div>
-      </nav>
-    )
+          </div>
+          {/* <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <input type="search" className="form-control" placeholder="Search..." aria-label="Search" />
+          </form> */}
+        </div>
+      </div>
+    </header>
+  )
 }

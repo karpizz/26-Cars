@@ -46,7 +46,7 @@ export function Login() {
   }
   
   return (
-    <div className="container col-4 my-5 text-center min-vh-100">
+    <div className="container col-10 col-xl-3 col-lg-4 col-md-4 col-sm-auto col-xs-12 my-5 text-center">
       <div className="form-signin">
         <form onSubmit={handleSubmit}>
           <h1 className="h1 mb-3 fw-normal">Please login</h1>

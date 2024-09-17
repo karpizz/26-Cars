@@ -1,16 +1,16 @@
 import express from "express";
 import { connection } from "../setupDb.js";
 
-const profile = express.Router();
+const funds = express.Router();
 
-profile.get('/', async (req, res) => {
+funds.get('/', async (req, res) => {
   const id = req.user.id;
   const role = req.user.role;
 
   let selectQuery = '';
 
   if (role === 'admin' || role === 'seller' || role === 'buyer') {
-    selectQuery = `SELECT users_info_id, surname, mobile, address, user_photo FROM users_info WHERE users_info_id = ?`;
+    selectQuery = `SELECT funds FROM users_funds WHERE users_id = ?`;
   } else {
     return res.status(403).json({
       status: 'err',
@@ -20,7 +20,7 @@ profile.get('/', async (req, res) => {
 
   try {
     const [selectRes] = await connection.execute(selectQuery, [id]);
-
+    
     if (selectRes[0] === undefined) {
         return res.json({
           status: 'err',
@@ -29,7 +29,7 @@ profile.get('/', async (req, res) => {
     } else {
       return res.json({
         status: 'ok',
-        data: selectRes[0],
+        funds: selectRes[0].funds,
       });
 
     }
@@ -37,13 +37,13 @@ profile.get('/', async (req, res) => {
     console.log(error);
     return res.status(500).json({
       status: 'err',
-      msg: 'get: get user info from DB ERROR'
+      msg: 'get: get user funds from DB ERROR'
     });
   }
 });
 
-profile.post('/', async (req, res) => {
-  const { surname, mobile, address, userPhoto } = req.body;
+funds.post('/', async (req, res) => {
+  const { money } = req.body;
   const { id, role } = req.user;
 
   if (role !== 'admin' && role !== 'seller' && role !== 'buyer') {
@@ -54,23 +54,25 @@ profile.post('/', async (req, res) => {
   }
 
   try {
-    const insertQ = `INSERT INTO users_info (users_info_id, surname, mobile, address, user_photo) VALUES (?, ?, ?, ?, ?)`;
-    const [insertRes] = await connection.execute(insertQ, [id, surname, mobile, address, userPhoto]);
+    const insertQ = `INSERT INTO users_funds (users_funds.users_id, users_funds.funds) VALUES (?, ?)`;
+    const [insertRes] = await connection.execute(insertQ, [id, money]);
 
     return res.json({
       status: 'ok',
-      msg: 'Info added',
+      msg: 'Money added',
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: 'add profile info error' });
+    res.status(500).json({ msg: 'add funds info error' });
   }
 });
 
-profile.put('/:id', async (req, res) => {
+funds.put('/:id', async (req, res) => {
   const { newSur, newMob, newAdd, newUserP } = req.body;
   const { role } = req.user;
   const { id } = req.params;
+  
+  console.log(id);
   
   if (role !== 'admin' && role !== 'seller' && role !== 'buyer') {
     return res.status(400).json({
@@ -90,8 +92,8 @@ profile.put('/:id', async (req, res) => {
   } catch (error) {
     console.log(error);
 
-    res.status(500).json({ msg: 'update profile error' });
+    res.status(500).json({ msg: 'update funds error' });
   }
 });
 
-export { profile };
+export { funds };

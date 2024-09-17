@@ -1,9 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 import { GlobalContext } from '../../../context/GlobalContext';
 import { NoPage } from '../../NoPage';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import defailtImg from '../../../photo/default.png';
-import { EditCar } from './SellerEditCar';
 
 export function SellerCars() {
 
@@ -155,7 +154,7 @@ export function SellerCars() {
           </div>
         </div>
         <div className="row">
-          <button onClick={() => setShowForm(!showForm)} className='btn btn-primary rounded-pill px-3 my-2 col-3 col-lg-2'>Add car for sale</button>
+          <button onClick={() => setShowForm(!showForm)} className='btn btn-primary rounded-pill px-3 my-2 col-6 col-lg-2 col-sm-auto'>Add car for sale</button>
         </div>
       </div>
       <div className="col-12 d-flex justify-content-between">

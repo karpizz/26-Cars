@@ -64,7 +64,7 @@ export function AdminDashboard() {
               <th scope="col">Type</th>
               <th scope="col">Year</th>
               <th scope="col">Added</th>
-              <th scope="col">Actions</th>
+              <th className='text-end' scope="col">Actions</th>
             </tr>
           </thead>
           {carList.length === 0 ? <thead><tr><th>Empty</th></tr></thead> : <tbody>
@@ -78,8 +78,10 @@ export function AdminDashboard() {
                   <td>{car.selectedType}</td>
                   <td>{car.year}</td>
                   <td>{car.created.slice(0, 19).replace('T', ' ')}</td>
-                  <td className='text-end'><button className='btn btn-primary rounded-pill py-1 px-3'>Edit</button>
-                    <button onClick={() => deleteCar(car.id)} className='btn btn-danger rounded-pill py-1 px-3'>Delete</button></td>
+                  <td className='text-end'>
+                    {/* <button className='btn btn-primary rounded-pill py-1 px-3'>Edit</button> */}
+                    <button onClick={() => deleteCar(car.id)} className='btn btn-danger rounded-pill py-1 px-3'>Delete</button>
+                  </td>
                 </tr>
               ))
             }

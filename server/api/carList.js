@@ -124,7 +124,6 @@ carList.put('/:carId', async (req, res) => {
   try {
       const insertQ = `UPDATE \`create-car\` SET name = ?, year = ?, price = ?, selectedType = ?, image = ? WHERE id = ?`;
       const [insertRes] = await connection.execute(insertQ, [newName, newYear, newPrice, newSelectCarType, newPic, carId]);
-      console.log(insertRes);
       
         if (insertRes.changedRows < 1) {
           return res.json({

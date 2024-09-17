@@ -1,4 +1,4 @@
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ContextWrapper } from './context/GlobalContext';
 import { PublicLayout } from './layout/PublicLayout';
 import { UserLayout } from './layout/UserLayout';
@@ -7,10 +7,12 @@ import { Register } from './pages/Register';
 import { Login } from './pages/Login';
 import { NoPage } from './pages/NoPage';
 import { Users } from './pages/users/Users';
-import { Editprofile } from './pages/users/Editprofile';
 import { SellerCars } from './pages/dashboard/Seller/SellerCars';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { SellerEditCar } from './pages/dashboard/Seller/SellerEditCar';
+import { Profile } from './pages/users/Profile';
+import { Editprofile } from './pages/users/Editprofile';
+import { AddProfile } from './pages/users/AddProfile';
 
 function App() {
   return (
@@ -27,7 +29,9 @@ function App() {
             <Route path='/cars' element={<SellerCars />}></Route>
             <Route path='/cars/:carId/edit' element={<SellerEditCar />}></Route>
             <Route path='/users' element={<Users />}></Route>
-            <Route path='/profile' element={<Editprofile />}></Route>
+            <Route path='/profile' element={<Profile />}></Route>
+            <Route path='/profile/add' element={<AddProfile />}></Route>
+            <Route path='/profile/:id/edit' element={<Editprofile />}></Route>
           </Route>
           <Route Component={PublicLayout}>
             <Route path='*' element={<NoPage />}></Route>
@@ -39,11 +43,3 @@ function App() {
 }
 
 export default App;
-
-{/* <Routes>
-  <Route path="/" element={<Dashboard />}>
-    <Route path="messages" element={<DashboardMessages />}/>
-    <Route path="tasks" element={<DashboardTasks />} />
-  </Route>
-  <Route path="about" element={<AboutPage />} />
-</Routes> */}
