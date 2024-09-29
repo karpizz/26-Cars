@@ -8,17 +8,20 @@ import { NoPage } from '../pages/NoPage';
 export function UserLayout() {
 
     const { role } = useContext(GlobalContext);
-    let content = <Outlet/>;
+
+    let content = <Outlet />;
 
     if (role !== 'admin' && role !== 'seller' && role !== 'buyer') {
         content = <NoPage />;
-      } 
+    }
 
     return (
-        <>
-            <header><UserHeader /></header>
-            <main>{content}</main>
-            <footer><Footer /></footer>
-        </>
+        <div className='app'>
+            <UserHeader />
+            <main>
+                {content}
+            </main>
+            <Footer />
+        </div>
     )
 }

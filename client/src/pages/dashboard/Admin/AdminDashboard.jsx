@@ -51,10 +51,10 @@ export function AdminDashboard() {
           </button>
         </div>
       </div>
-      <img className='d-block mx-lg-auto img-fluid' src={canvas} alt="canvas" />
+      <img className='d-block mx-lg-auto img-fluid' src={canvas} alt="canvas" style={{width: '800px'}}/>
       <h2 className='mt-5'>Car list</h2>
       <div className="table-responsive-lg">
-        <table className="table table-striped">
+        <table className="table table-striped align-middle">
           <thead className='table-dark'>
             <tr>
               <th scope="col">#</th>
@@ -64,10 +64,11 @@ export function AdminDashboard() {
               <th scope="col">Type</th>
               <th scope="col">Year</th>
               <th scope="col">Added</th>
+              <th scope="col">Status</th>
               <th className='text-end' scope="col">Actions</th>
             </tr>
           </thead>
-          {carList.length === 0 ? <thead><tr><th>Empty</th></tr></thead> : <tbody>
+          {carList.length === 0 ? <thead><tr><th>Empty...</th></tr></thead> : <tbody>
             {
               carList.map((car) => (
                 <tr key={car.id}>
@@ -78,9 +79,9 @@ export function AdminDashboard() {
                   <td>{car.selectedType}</td>
                   <td>{car.year}</td>
                   <td>{car.created.slice(0, 19).replace('T', ' ')}</td>
+                  <td><span className={`badge bg-${car.status === 'sold' ? 'danger' : 'success'} fs-6`}>{car.status}</span></td>
                   <td className='text-end'>
-                    {/* <button className='btn btn-primary rounded-pill py-1 px-3'>Edit</button> */}
-                    <button onClick={() => deleteCar(car.id)} className='btn btn-danger rounded-pill py-1 px-3'>Delete</button>
+                    <button onClick={() => deleteCar(car.id)} disabled={car.status === 'active'} className='btn btn-danger rounded-pill py-1 px-3'>Delete</button>
                   </td>
                 </tr>
               ))

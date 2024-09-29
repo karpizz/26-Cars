@@ -29,7 +29,7 @@ funds.get('/', async (req, res) => {
     } else {
       return res.json({
         status: 'ok',
-        funds: selectRes[0].funds,
+        funds: selectRes,
       });
 
     }
@@ -54,44 +54,45 @@ funds.post('/', async (req, res) => {
   }
 
   try {
-    const insertQ = `INSERT INTO users_funds (users_funds.users_id, users_funds.funds) VALUES (?, ?)`;
+    const insertQ = `INSERT INTO users_funds (users_id, funds) VALUES (?, ?)`;
     const [insertRes] = await connection.execute(insertQ, [id, money]);
+
+    const selectQuery = `SELECT funds FROM users_funds WHERE users_id = ?`;
+    const [selectRes] = await connection.execute(selectQuery, [id]);
+
 
     return res.json({
       status: 'ok',
       msg: 'Money added',
+      money: selectRes,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: 'add funds info error' });
+    return res.status(500).json({ msg: 'add funds error' });
   }
 });
 
-funds.put('/:id', async (req, res) => {
-  const { newSur, newMob, newAdd, newUserP } = req.body;
-  const { role } = req.user;
-  const { id } = req.params;
+funds.put('/', async (req, res) => {
+  const { addMoney } = req.body;
+  const { id, role } = req.user;
   
-  console.log(id);
-  
-  if (role !== 'admin' && role !== 'seller' && role !== 'buyer') {
+  if (role !== 'buyer') {
     return res.status(400).json({
       status: 'err',
-      msg: 'You are not a seller',
+      msg: 'You are not a buyer',
     });
   }
 
   try {
-    const insertQ = `UPDATE users_info SET surname = ?, mobile = ?, address = ?, user_photo = ? WHERE users_info_id = ?`;
-    const [insertRes] = await connection.execute(insertQ, [newSur, newMob, newAdd, newUserP, id]);
-
+    const insertQ = `UPDATE users_funds SET funds = ? WHERE users_id = ?`;
+    const [insertRes] = await connection.execute(insertQ, [addMoney, id]);
+    
     return res.json({
       status: 'ok',
-      msg: 'Profile updated',
+      msg: 'Funds updated',
     });
   } catch (error) {
     console.log(error);
-
     res.status(500).json({ msg: 'update funds error' });
   }
 });

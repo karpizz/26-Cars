@@ -35,11 +35,19 @@ export function SellerCars() {
   }
 
   function updateYear(e) {
-    setYear(e.target.value);
+    if ((e.target.value).includes(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)) {
+      setYear(e.target.value);
+    } else {
+      return;
+    }
   }
 
   function updatePrice(e) {
-    setPrice(e.target.value);
+    if ((e.target.value).includes(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)) {
+      setPrice(e.target.value);
+    } else {
+      return;
+    }
   }
 
   function updateCarType(e) {
@@ -79,8 +87,8 @@ export function SellerCars() {
       .then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          updateMessage(data.msg)
-          updateCars(data.data)
+          updateMessage(data.msg);
+          updateCars(data.data);
         }
       })
       .catch(err => console.error(err))
@@ -96,7 +104,7 @@ export function SellerCars() {
     }).then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          updateMessage(data.msg)
+          updateMessage(data.msg);
           updateCars(data.data);
         }
       })
@@ -117,17 +125,17 @@ export function SellerCars() {
                 <div className="modal-body p-5">
                   <form onSubmit={submitHandler}>
                     <div className="form-floating mb-3">
-                      <input autoComplete='on' id='name' onChange={updateName} value={name} type="text" className="form-control rounded-3" placeholder='Name' />
+                      <input autoComplete='on' id='name' onChange={updateName} value={name} type="text" className="form-control rounded-3" placeholder='Name' required />
                       <label htmlFor="name">Name</label>
                     </div>
                     <div className="form-floating mb-3">
-                      <input autoComplete='on' id='price' onChange={updatePrice} value={price} type="text" className="form-control rounded-3" placeholder='Price' />
+                      <input autoComplete='on' id='price' onChange={updatePrice} value={price} type="text" className="form-control rounded-3" placeholder='Price' required />
                       <label htmlFor="price">Price</label>
                     </div>
                     <div className="mb-3">
                       <label htmlFor="selectCarType" className="form-label">Select car type</label>
-                      <select onChange={updateCarType} value={selectCarType} className="form-select" id="selectCarType">
-                        <option value='None'>- Select</option>
+                      <select onChange={updateCarType} value={selectCarType} className="form-select" id="selectCarType" required>
+                        <option value=''>-Select car type</option>
                         {
                           carTypes.map((e) => (
                             <option key={e.type} value={e.type}>{e.type}</option>
@@ -136,17 +144,17 @@ export function SellerCars() {
                       </select>
                     </div>
                     <div className="form-floating mb-3">
-                      <input autoComplete='on' id='year' onChange={updateYear} value={year} type="text" className="form-control rounded-3" placeholder='Year' />
+                      <input autoComplete='on' id='year' onChange={updateYear} value={year} type="text" className="form-control rounded-3" placeholder='Year' required />
                       <label htmlFor="year">Year</label>
                     </div>
                     <div className="form-floating mb-3">
-                      <input onChange={updateImage} id='pic' type="file" className="form-control rounded-3" placeholder='pic' />
+                      <input onChange={updateImage} id='pic' type="file" className="form-control rounded-3" placeholder='pic' required />
                       <label htmlFor="pic">Picture</label>
                     </div>
                     <div className="form-floating mb-3">
                       <img src={image ? image : defailtImg} alt="carPhoto" style={{ width: '150px' }} />
                     </div>
-                    <button onClick={() => setShowForm(!showForm)} className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Confirm</button>
+                    <button onClick={() => name && price && selectCarType && year && image ? setShowForm(!showForm) : ''} className="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Confirm</button>
                   </form>
                 </div>
               </div>

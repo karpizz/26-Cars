@@ -6,28 +6,12 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export function AddProfile() {
-  const { role, updateMessage, message } = useContext(GlobalContext);
+  const { role, updateMessage, message, updateUserPhoto } = useContext(GlobalContext);
   const [surname, setSurname] = useState('');
   const [mobile, setMobile] = useState('');
   const [address, setAddress] = useState('');
   const [userPhoto, setUserphoto] = useState('');
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   fetch('http://localhost:3001/api/profile', {
-  //     method: 'GET',
-  //     headers: {
-  //       Accept: 'application/json',
-  //     },
-  //     credentials: 'include',
-  //   }).then(res => res.json())
-  //     .then(data => {
-  //       if (data.status === 'ok') {
-  //         setUsers(data.data);
-  //       }
-  //     })
-  //     .catch(err => console.error(err))
-  // }, []);
 
   if (role !== 'admin' && role !== 'seller' && role !== 'buyer') {
     return <NoPage />;
@@ -57,10 +41,6 @@ export function AddProfile() {
       .catch(err => console.log(err))
   }
 
-  // function updateEditprofile() {
-
-  // }
-
   function submitHandler(e) {
     e.preventDefault();
 
@@ -81,8 +61,9 @@ export function AddProfile() {
       .then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          updateMessage(data.msg)
-          navigate('/profile')
+          updateUserPhoto(data.photo.user_photo);
+          updateMessage(data.msg);
+          navigate('/profile');
         }
       })
       .catch(err => console.error(err))

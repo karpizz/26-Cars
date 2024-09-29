@@ -22,14 +22,14 @@ profile.get('/', async (req, res) => {
     const [selectRes] = await connection.execute(selectQuery, [id]);
 
     if (selectRes[0] === undefined) {
-        return res.json({
-          status: 'err',
-          msg: 'No user data'
-        });
+      return res.json({
+        status: 'err',
+        msg: 'No user data'
+      });
     } else {
       return res.json({
         status: 'ok',
-        data: selectRes[0],
+        user: selectRes[0],
       });
 
     }
@@ -37,7 +37,7 @@ profile.get('/', async (req, res) => {
     console.log(error);
     return res.status(500).json({
       status: 'err',
-      msg: 'get: get user info from DB ERROR'
+      msg: 'get method: user info from DB ERROR'
     });
   }
 });
@@ -57,9 +57,13 @@ profile.post('/', async (req, res) => {
     const insertQ = `INSERT INTO users_info (users_info_id, surname, mobile, address, user_photo) VALUES (?, ?, ?, ?, ?)`;
     const [insertRes] = await connection.execute(insertQ, [id, surname, mobile, address, userPhoto]);
 
+    const selectQ = `SELECT user_photo FROM users_info WHERE users_info_id = ?`;
+    const [selectRes] = await connection.execute(selectQ, [id]);
+
     return res.json({
       status: 'ok',
       msg: 'Info added',
+      photo: selectRes[0],
     });
   } catch (error) {
     console.log(error);
@@ -71,7 +75,7 @@ profile.put('/:id', async (req, res) => {
   const { newSur, newMob, newAdd, newUserP } = req.body;
   const { role } = req.user;
   const { id } = req.params;
-  
+
   if (role !== 'admin' && role !== 'seller' && role !== 'buyer') {
     return res.status(400).json({
       status: 'err',
@@ -89,8 +93,26 @@ profile.put('/:id', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ msg: 'update profile error' });
+  }
+});
 
-    res.status(500).json({ msg: 'update profile error' });
+profile.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleteQuery1 = `DELETE FROM users_info WHERE users_info_id = ?`;
+    const [deleteRes1] = await connection.execute(deleteQuery1, [id]);
+
+    return res.status(200).json({
+      status: 'ok',
+      msg: 'User info deleted',
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'err',
+      msg: 'delete: profile info delete ERROR'
+    });
   }
 });
 

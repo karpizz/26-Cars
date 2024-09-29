@@ -24,11 +24,11 @@ export function Editprofile() {
     }).then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          setSurname(data.data.surname)
-          setMobile(data.data.mobile)
-          setAddress(data.data.address)
-          setUserphoto(data.data.user_photo)
-          setUserId(data.data.users_info_id)
+          setSurname(data.user.surname);
+          setMobile(data.user.mobile);
+          setAddress(data.user.address);
+          setUserphoto(data.user.user_photo);
+          setUserId(data.user.users_info_id);
         }
       })
       .catch(err => console.error(err))

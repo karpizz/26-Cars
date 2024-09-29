@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 
 export function Login() {
-  const { updateEmail, updateUsername, updateLoginStatus, updateRole, message, updateMessage } = useContext(GlobalContext);
+  const { updateEmail, updateUsername, updateLoginStatus, updateRole, message, errMessage, updateErrMessage } = useContext(GlobalContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,19 +38,20 @@ export function Login() {
             updateRole(data.user.role);
             navigate('/dashboard');
           } else {
-            updateMessage(data.msg)
+            updateErrMessage(data.msg);
           }
         })
         .catch(err => console.error(err))
     }
   }
-  
+
   return (
     <div className="container col-10 col-xl-3 col-lg-4 col-md-4 col-sm-auto col-xs-12 my-5 text-center">
       <div className="form-signin">
         <form onSubmit={handleSubmit}>
           <h1 className="h1 mb-3 fw-normal">Please login</h1>
-          {message ? <span style={{fontSize: '14px'}} className="badge text-bg-danger rounded-pill mb-3">{message}</span> : ''}
+          {message ? <span style={{ fontSize: '14px' }} className="badge text-bg-success rounded-pill mb-3">{message}</span> : ''}
+          {errMessage ? <span style={{ fontSize: '14px' }} className="badge text-bg-danger rounded-pill mb-3">{errMessage}</span> : ''}
           <div className="form-floating">
             <input autoComplete="on" onChange={updateEmailLogin} type="email" className="form-control mb-1" id="email" required />
             <label htmlFor="email">Email address</label>

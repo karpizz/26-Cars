@@ -4,9 +4,6 @@ import { Login } from '../Login';
 import { AdminDashboard } from '../dashboard/Admin/AdminDashboard';
 import { SellerDashboard } from '../dashboard/Seller/SellerDashboard';
 import { BuyerDashboard } from '../dashboard/Buyer/BuyerDashboard';
-import { UserHeader } from '../../componets/UserHeader';
-import { Footer } from '../../componets/Footer';
-import { Header } from '../../componets/Header';
 
 export function Dashboard() {
   const { role } = useContext(GlobalContext);

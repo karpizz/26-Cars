@@ -10,13 +10,17 @@ export const initialContext = {
     email: '',
     updateEmail: () => { },
     cars: [],
-    carTypes: [],
     updateCars: () => { },
+    carTypes: [],
     updateCarTypes: () => { },
     message: '',
     updateMessage: () => { },
-    userImg: '',
+    errMessage: '',
+    updateErrMessage: () => { },
+    userPhotoContext: '',
     updateUserPhoto: () => { },
+    userMoney: 0,
+    updateUserMoney: () => { },
 };
 
 export const GlobalContext = createContext(initialContext);
@@ -29,9 +33,11 @@ export const ContextWrapper = (props) => {
     const [cars, setCars] = useState(initialContext.cars);
     const [carTypes, setCarTypes] = useState(initialContext.carTypes);
     const [message, setMessage] = useState(initialContext.message);
-    const [userImg, setUserImg] = useState(initialContext.userImg);
+    const [errMessage, setErrMessage] = useState(initialContext.errMessage);
+    const [userMoney, setUserMoney] = useState(initialContext.userMoney);
+    const [userPhotoContext, setUserphoto] = useState(initialContext.userPhotoContext);
 
-    //login
+    //login, status, role, username, email
     useEffect(() => {
         fetch('http://localhost:3001/api/login', {
             method: 'GET',
@@ -52,42 +58,46 @@ export const ContextWrapper = (props) => {
             .catch(console.error)
     }, []);
 
-    //user photo
+    //user picture
     useEffect(() => {
         fetch('http://localhost:3001/api/profile', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
+                Accept: 'application/json',
             },
             credentials: 'include',
         }).then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    setUserImg(data.data.user_photo)
+                    setUserphoto(data.user.user_photo);
                 }
             })
-            .catch(console.error)
-    }, []);
+            .catch(err => console.error(err))
+        return setUserphoto('');
+    }, [email]);
 
-    //carlist
+    const newLocal = role === 'buyer';
+
+    //funds
     useEffect(() => {
-        fetch('http://localhost:3001/api/carList', {
+        let countSum = 0;
+        fetch('http://localhost:3001/api/funds', {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
             },
             credentials: 'include',
-        })
-            .then(res => res.json())
+        }).then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    setCars(data.data)
+                    data.funds.map(a => countSum += a.funds);
+                    setUserMoney(countSum);
                 }
             })
-            .catch(console.error)
-    }, []);
-    
+            .catch(err => console.error(err))
+        return setUserMoney(0);
+    }, [newLocal]);
+
     //car types
     useEffect(() => {
         fetch('http://localhost:3001/api/carTypes', {
@@ -102,12 +112,13 @@ export const ContextWrapper = (props) => {
     }, []);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setMessage('')
-        }, 5000)
+        const timer = setTimeout(() => {
+            setMessage('');
+            setErrMessage('');
+        }, 3000);
 
-        return () => clearInterval(timer)
-    }, [message])
+        return () => clearTimeout(timer);
+    }, [message, errMessage])
 
     function updateRole(role) {
         const allowedRoles = ['admin', 'seller', 'buyer'];
@@ -115,6 +126,7 @@ export const ContextWrapper = (props) => {
             setRole(role);
         }
     }
+
     function updateLoginStatus(status) {
         setLoginStatus(status);
     }
@@ -135,8 +147,18 @@ export const ContextWrapper = (props) => {
         setMessage(data);
     }
 
+    function updateErrMessage(data) {
+        setErrMessage(data);
+    }
+
     function updateUserPhoto(data) {
-        setUserImg(data);
+        setUserphoto(data);
+    }
+
+    function updateUserMoney(a, b) {
+        (b === 0) ?
+            setUserMoney(a) :
+            setUserMoney(pre => pre + Number(a));
     }
 
     const value = {
@@ -153,8 +175,12 @@ export const ContextWrapper = (props) => {
         carTypes,
         message,
         updateMessage,
-        userImg,
+        userMoney,
+        updateUserMoney,
+        errMessage,
+        updateErrMessage,
         updateUserPhoto,
+        userPhotoContext,
     }
 
     return (

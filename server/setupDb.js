@@ -34,7 +34,6 @@ async function setupDb() {
         await generateCarTypes(connection);
     }
 
-
     return connection;
 }
 
@@ -62,11 +61,13 @@ async function usersTable(db) {
 async function usersInfoTable(db) {
     try {
         const sql = `CREATE TABLE IF NOT EXISTS users_info (
+                        id int(100) NOT NULL AUTO_INCREMENT,
                         users_info_id int(10) NOT NULL,
                         surname varchar(100) NOT NULL,
-                        mobile int(9) NOT NULL,
+                        mobile int(3) NOT NULL,
                         address varchar(100) NOT NULL,
                         user_photo varchar(100) NOT NULL,
+                        PRIMARY KEY (id),
                         KEY users_info_id (users_info_id),
                         CONSTRAINT users_info_ibfk_1 FOREIGN KEY (users_info_id) REFERENCES users (id)
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci`
@@ -117,8 +118,9 @@ async function fundsTable(db) {
                         funds int(5) NOT NULL,
                         PRIMARY KEY (id),
                         KEY funds (funds),
-                        CONSTRAINT users_funds_ibfk_1 FOREIGN KEY (funds) REFERENCES users (id)
-                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci`
+                        KEY users_funds_ibfk_1 (users_id),
+                        CONSTRAINT users_funds_ibfk_1 FOREIGN KEY (users_id) REFERENCES users (id)
+                    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci`
         await db.execute(sql);
     } catch (error) {
         console.log(error);
@@ -183,6 +185,7 @@ async function createCarList(db) {
                         price int(7) unsigned NOT NULL DEFAULT 0,
                         selectedType varchar(20) NOT NULL,
                         image varchar(100) NOT NULL,
+                        status varchar(10) NOT NULL DEFAULT 'active',
                         created timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
                         PRIMARY KEY (id)
                     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci`

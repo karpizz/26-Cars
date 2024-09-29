@@ -38,7 +38,7 @@ export function Users() {
     }).then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          setUsers(pre => pre.map(user => user.id === userId ? { ...user, is_blocked: status } : user))
+          setUsers(pre => pre.map(user => user.id === userId ? { ...user, is_blocked: status } : user));
         }
       })
       .catch(err => console.error(err))

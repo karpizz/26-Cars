@@ -15,11 +15,11 @@ login.get('/', async (req, res) => {
 
     try {
         const selectQuery = `SELECT users.username, users.email, roles.role FROM tokens
-                            JOIN users ON tokens.user_id = users.id 
+                            JOIN users ON tokens.user_id = users.id
                             JOIN roles ON users.role_id = roles.id 
                             WHERE token = ?;`;
         const [selectRes] = await connection.execute(selectQuery, [carsToken]);
-
+        
         if (selectRes.length === 0) {
             return res.status(200).set({
                 'Set-Cookie': [
@@ -43,7 +43,10 @@ login.get('/', async (req, res) => {
         });
 
     } catch (error) {
-
+        return res.status(500).json({
+            status: 'err',
+            msg: 'POST: login API - server ERROR'
+        });
     }
 
 })
@@ -58,12 +61,14 @@ login.post('/', async (req, res) => {
             msg: 'Incorrect email'
         });
     }
+
     if (typeof password !== 'string' || password.length < 6) {
         errors.push({
             input: 'password',
             msg: 'Incorrect password'
         });
     }
+    
     if (errors.length > 0) {
         return res.status(409).json(errors);
     }
@@ -73,7 +78,7 @@ login.post('/', async (req, res) => {
                             JOIN roles ON roles.id = users.role_id
                             WHERE email = ? AND password = ?;`;
         const [selectRes] = await connection.execute(selectQuery, [email, hash(password)]);
-
+        
         if (selectRes.length === 0) {
             return res.status(200).json({
                 status: 'err',
@@ -85,7 +90,7 @@ login.post('/', async (req, res) => {
         if (userObj.is_blocked) {
             return res.status(200).json({
                 status: 'err',
-                msg: 'You are blocked',
+                msg: 'You have been blocked',
             });
         }
 
@@ -108,7 +113,6 @@ login.post('/', async (req, res) => {
                 ].join('; ')
             }).json({
                 status: 'ok',
-                msg: 'login POST method: token created',
                 user: userObj,
             });
         } else {

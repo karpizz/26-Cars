@@ -35,7 +35,7 @@ export function Header() {
   </>
 
   return (
-    <header className="p-3 mb-3 border-bottom text-bg-info">
+    <header className="p-3 bg-info">
       <div className="container">
         <div className="d-flex flex-wrap justify-content-between">
           <ul className="nav col-12 col-lg-auto col-sm-auto me-lg-auto mb-2 mb-md-0">

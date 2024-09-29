@@ -5,11 +5,11 @@ import { hash } from "../lib/hash.js";
 const register = express.Router();
 
 register.get('/', (req, res) => {
-    return res.json({msg: 'Register GET method'})
+    return res.json({ msg: 'Register GET method' })
 })
 
 register.post('/', async (req, res) => {
-    const {username, email, password} = req.body;
+    const { username, email, password, role } = req.body;
     // console.log(req.body);
     const errors = [];
     if (typeof username !== 'string' || username.length < 2) {
@@ -20,47 +20,42 @@ register.post('/', async (req, res) => {
     }
 
     if (typeof email !== 'string' || email.length < 6) {
-         errors.push({
+        errors.push({
             input: 'email',
             msg: 'Bad email'
         });
     }
 
     if (typeof password !== 'string' || password.length < 6) {
-         errors.push({
+        errors.push({
             input: 'password',
             msg: 'Bad password'
         });
     }
     if (errors.length > 0) {
         console.log(errors);
-        
+
         return res.status(409).json(errors);
     }
 
     try {
         const selectQuery = `SELECT * FROM users WHERE email = ?;`;
         const [selectRes] = await connection.execute(selectQuery, [email]);
-        
+
         if (selectRes.length > 0) {
             return res.status(200).json({
-                status: 'err-list',
-                error: [
-                    {
-                        input: 'email',
-                        msg: 'Email already exist!',
-                    }
-                ]
-                });
+                status: 'err',
+                msg: 'Email already exist!',
+            });
         }
 
-        const insertQuery = `INSERT INTO users (username, email, password) VALUES (?, ?, ?);`;
-        const [insertRes] = await connection.execute(insertQuery, [username, email, hash(password)]);
-        
+        const insertQuery = `INSERT INTO users (username, email, password, role_id) VALUES (?, ?, ?, ?);`;
+        const [insertRes] = await connection.execute(insertQuery, [username, email, hash(password), role]);
+
         if (insertRes.insertId > 0) {
             return res.status(200).json({
                 status: 'ok',
-                msg: 'Register POST method: user created',
+                msg: 'Registered successfully!',
             });
         } else {
             return res.status(400).json({
@@ -71,9 +66,10 @@ register.post('/', async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             status: 'err',
-            msg: 'POST: REGISTER API - server ERROR'});
+            msg: 'POST: REGISTER API - server ERROR'
+        });
     }
-    
+
 });
 
-export {register};
+export { register };

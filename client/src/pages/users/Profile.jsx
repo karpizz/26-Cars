@@ -5,7 +5,7 @@ import defaultUserPhoto from '../../photo/default.png';
 import { Link } from 'react-router-dom';
 
 export function Profile() {
-  const { role, message, username, updateUserPhoto, updateMessage } = useContext(GlobalContext);
+  const { role, message, username, updateMessage, updateUserMoney, errMessage, updateErrMessage, userMoney, updateUserPhoto } = useContext(GlobalContext);
   const [surname, setSurname] = useState('');
   const [mobile, setMobile] = useState('');
   const [address, setAddress] = useState('');
@@ -13,16 +13,8 @@ export function Profile() {
   const [userId, setUserId] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [money, setMoney] = useState(0);
-  const [userMoney, setUserMoney] = useState(0);
 
-  useEffect(() => {
-    fetch('http://localhost:3001/api/funds', {
-      credentials: 'include',
-    }).then(res => res.json())
-      .then(data => setUserMoney(data.funds))
-      .catch(err => console.error(err))
-  }, []);
-
+  //user profile
   useEffect(() => {
     fetch('http://localhost:3001/api/profile', {
       method: 'GET',
@@ -33,12 +25,11 @@ export function Profile() {
     }).then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          setSurname(data.data.surname)
-          setMobile(data.data.mobile)
-          setAddress(data.data.address)
-          setUserphoto(data.data.user_photo)
-          updateUserPhoto(data.data.user_photo)
-          setUserId(data.data.users_info_id)
+          setSurname(data.user.surname);
+          setMobile(data.user.mobile);
+          setAddress(data.user.address);
+          setUserphoto(data.user.user_photo);
+          setUserId(data.user.users_info_id);
         }
       })
       .catch(err => console.error(err))
@@ -49,56 +40,90 @@ export function Profile() {
   }
 
   function updateFunds(e) {
-    setMoney(e.target.value)
+    if (e.target.value < 0) {
+      return;
+    } else {
+      setMoney(e.target.value);
+    }
   }
 
   function submitHandler(e) {
     e.preventDefault();
 
+    let addMoney = (parseInt(money) + parseInt(userMoney));
+
     fetch('http://localhost:3001/api/funds', {
-      method: 'POST',
+      method: 'PUT',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
       body: JSON.stringify({
-        money
+        addMoney
       }),
     })
       .then(res => res.json())
       .then(data => {
         if (data.status === 'ok') {
-          updateMessage(data.msg)
+          updateMessage(data.msg);
+          updateUserMoney(money);
+        } else {
+          updateErrMessage(data.msg)
         }
       })
       .catch(err => console.error(err))
   }
 
+  function deleteUserInfo(id) {
+    fetch('http://localhost:3001/api/profile/' + id, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+      },
+    }).then(res => res.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          updateMessage(data.msg);
+          updateUserPhoto('');
+          setSurname('');
+          setMobile('');
+          setAddress('');
+          setUserphoto('');
+          setUserId('');
+        }
+      })
+      .catch(err => console.error(err))
+  }
 
   return (
-    <div className="container my-5">
+    <div className="container">
       <div className="row">
         {message ? <div className="alert alert-success fade show" role="alert">{message}</div> : ''}
+        {errMessage ? <div className="alert alert-danger fade show" role="alert">{errMessage}</div> : ''}
         {role === 'buyer' ?
-          <div className='text-end'>
-            <button onClick={() => setShowForm(!showForm)} type="button" data-bs-toggle="modal" className='btn btn-primary rounded-3'>Add funds</button>
-            <div className={`modal fade ${showForm ? 'show' : ''}`} style={{ display: `${showForm ? 'block' : 'none'}` }} id="moneyModal" tabIndex="-1">
-              <div className="modal-dialog" style={{ transform: 'translateY(100px)' }}>
-                <div className="modal-content rounded">
-                  <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">Add funds</h1>
-                    <button onClick={() => setShowForm(!showForm)} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div className="modal-body">
-                    <form onSubmit={submitHandler}>
-                      <div className="mb-3">
-                        <label htmlFor="money" className="col-form-label">Amount</label>
-                        <input onChange={updateFunds} type="number" className="form-control rounded" id="money" value={money}></input>
-                      </div>
-                      <button onClick={() => setShowForm(!showForm)} type="submit" className="btn btn-primary rounded mx-1">Confirm</button>
-                      <button onClick={() => setShowForm(!showForm)} type="button" className="btn btn-secondary rounded" data-bs-dismiss="modal">Close</button>
-                    </form>
+          <div className="row">
+            <div className='text-end'>
+              <p style={{ fontSize: '20px' }}>Balance: {userMoney}</p>
+              <button onClick={() => setShowForm(!showForm)} type="button" data-bs-toggle="modal" className='btn btn-primary rounded-3'>Add funds</button>
+              <div className={`modal fade ${showForm ? 'show' : ''}`} style={{ display: `${showForm ? 'block' : 'none'}` }} id="moneyModal" tabIndex="-1">
+                <div className="modal-dialog" style={{ transform: 'translateY(100px)' }}>
+                  <div className="modal-content rounded">
+                    <div className="modal-header">
+                      <h1 className="modal-title fs-5" id="exampleModalLabel">Add funds</h1>
+                      <button onClick={() => setShowForm(!showForm)} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div className="modal-body">
+                      <form onSubmit={submitHandler}>
+                        <div className="mb-3">
+                          <label htmlFor="money" className="col-form-label">Amount</label>
+                          <input onChange={updateFunds} type="number" className="form-control rounded" id="money" value={money}></input>
+                        </div>
+                        <button onClick={() => setShowForm(!showForm)} type="submit" className="btn btn-primary rounded mx-1">Confirm</button>
+                        <button onClick={() => setShowForm(!showForm)} type="button" className="btn btn-secondary rounded" data-bs-dismiss="modal">Close</button>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -106,9 +131,6 @@ export function Profile() {
           </div>
           : ''}
         <div className="d-flex justify-content-end col-12 col-lg-5 col-md-3 col-sm-12">
-            <div className="col-4 mt-4">
-              <p>Balance: {userMoney}</p>
-            </div>
           <div className="py-5">
             <img className='rounded-circle' style={{ width: '150px', height: '150px', objectFit: 'cover' }} src={userPhoto ? userPhoto : defaultUserPhoto} alt={userPhoto ? userPhoto : defaultUserPhoto} />
           </div>
@@ -154,8 +176,9 @@ export function Profile() {
                 </div>
               </div>
             </div>
-            {surname ? '' : <Link className="mt-4 btn btn-primary rounded-pill col-3 mx-5" to='/profile/add'>Add info</Link>}
-            <Link className="mt-4 btn btn-warning col-3 rounded-pill" to={`${userId}/edit`}>Edit profile</Link>
+            {surname && mobile && address && userPhoto ? '' : <Link className="mt-4 btn btn-primary rounded-pill col-3" to='/profile/add'>Add info</Link>}
+            {surname || mobile || address || userPhoto ? <Link className="mt-4 btn btn-warning col-3 rounded-pill" to={`${userId}/edit`}>Edit profile</Link> : ''}
+            {surname && mobile && address && userPhoto ? <button onClick={() => deleteUserInfo(userId)} className="mt-4 btn btn-danger rounded-pill col-3 mx-2">Delete</button> : ''}
           </div>
         </div>
       </div>

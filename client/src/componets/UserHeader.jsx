@@ -4,7 +4,7 @@ import { GlobalContext } from "../context/GlobalContext";
 import defaultImg from '../photo/default.png';
 
 export function UserHeader() {
-  const { role, updateEmail, updateUsername, updateLoginStatus, updateRole, userImg } = useContext(GlobalContext);
+  const { role, updateEmail, updateUsername, updateLoginStatus, updateRole, userPhotoContext, username } = useContext(GlobalContext);
   const [showLinks, setShowLinks] = useState(false);
   const navigate = useNavigate();
 
@@ -43,20 +43,20 @@ export function UserHeader() {
   const adminLinks = <>
     <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2">Dashboard</Link></li>
     <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/users" className="nav-link link-body-emphasis px-2">Users</Link></li>
-    <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">Profile</Link></li>
+    <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">{username}</Link></li>
     <li className="dropdown-item border-top"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
   </>
 
   const buyerLinks = <>
     <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2">Dashboard</Link></li>
-    <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">Profile</Link></li>
+    <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">{username}</Link></li>
     <li className="dropdown-item border-top"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
   </>
 
   const sellerLinks = <>
     <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/dashboard" className="nav-link link-body-emphasis px-2">Dashboard</Link></li>
     <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/cars" className="nav-link link-body-emphasis px-2">Cars</Link></li>
-    <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">Profile</Link></li>
+    <li onClick={() => setShowLinks(!showLinks)} className="dropdown-item"><Link to="/profile" className="nav-link link-body-emphasis px-2">{username}</Link></li>
     <li className="dropdown-item border-top"><button onClick={logOut} className="nav-link link-body-emphasis px-2">Logout</button></li>
   </>
 
@@ -91,7 +91,7 @@ export function UserHeader() {
           </form> */}
           <div className="col-auto dropdown text-end">
             <div onClick={() => setShowLinks(!showLinks)} className="d-block link-body-emphasis text-decoration-none dropdown-toggle" style={{ cursor: 'pointer' }}>
-              <img src={userImg ? userImg : defaultImg} alt="mdo" width="32" height="32" className="rounded-circle" />
+              <img src={userPhotoContext ? userPhotoContext : defaultImg} alt="mdo" width="32" height="32" className="rounded-circle" />
             </div>
             <ul className={`dropdown-menu text-small border rounded-3 ${showLinks ? 'show' : ''}`} style={menuStyle}>
               {extraLinks}

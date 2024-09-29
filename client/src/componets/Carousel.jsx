@@ -6,7 +6,7 @@ export function Carousel() {
 
   return (
 
-    <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleCaptions" className="carousel slide pb-5" data-bs-ride="carousel">
       <h2 className="pb-2 border-bottom my-5">Car shop</h2>
       <div className="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-label="Slide 1"></button>
