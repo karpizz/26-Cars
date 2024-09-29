@@ -1,1 +1,1 @@
-https://karpizz.github.io/
+https://karpizz.github.io
